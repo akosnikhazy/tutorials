@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Canvas Példák</title>
+  <meta name="author" content="">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base target="_blank">
+  <!-- nem számít a stílus itt, szóval egysoroztam, sorry -->
+  <style>html{background: #333;color:#333;}body>p,h1{text-align:center;color:#efefef}h2{margin:5px;}div{background: #efefef;width:700px;border: 1px solid #666;padding: 30px;margin: 20px auto;-webkit-border-radius: 4px;border-radius: 4px;}canvas{border: 1px solid #ccc;margin-bottom: 100px;}label{display:inline-block;width: 100px;cursor:pointer;}span{font-size:88%;}span a{color: #666;text-decoration:none}span a:hover{color: #333;text-decoration:underline}</style>
+</head>
+<body>
+<h1>Canvas Példa</h1>
+<p>Ez egy példa a kód által generált képekre. Ehhez HTML-re és Javascript-re van szükséged.</p>
+<!-- 
+
+
+	VONAL RAJZOLÁS
+
+
+ -->
+<div>
+	<h2>Vonal</h2>
+	<p>Csak egy vonal. A vonalnak meg kell adni a kiinduló pontját (X,Y koordináta) és vég pontját (szintén X,Y koordináta)</p>
+	<canvas id="vonal" width="200" height="100"></canvas>
+
+	<script>
+	var c = document.getElementById("vonal"); // a c változóba rakjuk a vonal id-jű Canvas tagot. (innentől vászonnak hívom, mert az a magyar neve)
+	var ctx = c.getContext("2d"); // megmondjuk a vászonnak, hogy 2 dimenzióban akarunk dolgozni rá
+	ctx.moveTo(0, 0);      		  // az ecsetet a vászon bal felső sarkába (0 az X tengelyen és 0 az Y tengelyen) rakuk
+	ctx.lineTo(200, 100);		  // az ecsettel vonalat húzunk a 200 és 100 pozicióba. (X = 200, Y = 100. Mivel a vászon mérete 200x100 ezért ez a jobb alsó sarkot jelenti)
+	ctx.stroke();				  // elvégezzük a fenti két sorban leírt műveletet.
+	</script> 
+</div>
+
+
+
+
+
+
+
+
+<!-- 
+
+
+	NÉGYSZÖG RAJZOLÁS
+
+
+ -->
+<div>
+<h2>Négyszög</h2>
+<p>Négyzetek és általába négyszögek ugyan létrehozhatóak vonalakból, de van rá külön kód kettő is: egyik kitölti, másik körbe rajzolja.</p>
+<canvas id="negyzet" width="200" height="100"></canvas>
+
+<script>
+var cn = document.getElementById("negyzet"); 
+var ctn = cn.getContext("2d"); 				
+
+ctn.fillStyle = "green";					// megmondjuk milyen színűre akarjuk a négyzetet
+ctn.fillRect(45,5,50,50);				    // elhelyezzük a négyzetet az értékek forma bal felső sarka X és Y értéke, szélesség, magasság.
+
+ctn.fillStyle = "pink";						// színt váltunk (ha ezt nem tennénk meg ez is ugyan olyan színű lenne)
+ctn.fillRect(60,40,75,50);					// most nem négyzetet rajolunk, hanem téglatestet kicsit arrébb.
+
+											// vedd észre hogy rajzolási sorrenben fedik egymást.
+											
+ctn.rect(170,10,20,20);						// ez pedig a kis üres négyzet. Ez másik függvénnyel van, mert ennek nincs belseje.				
+ctn.stroke();									
+
+
+// és a fentiek kombinálva a bekeretezett piros négyzetet adják
+ctn.fillStyle = "red";						
+ctn.fillRect(170,60,20,20); // ez a négyzet belseje ami piros
+
+
+ctn.rect(170,60,20,20);		// ez a négyzet kerete							
+ctn.stroke();
+</script> 
+</div>
+
+
+
+
+
+
+<!-- 
+
+
+	KÖR RAJZOLÁS
+
+
+ -->
+<div>
+<h2>Kör</h2>
+<p>A kör az órajárása szerint jobbról "3 óra" pozicióból indul és radiánsokkal lehet megadni meddig érjen a körvonal. Tehát így egy negyed kör az 0.5*PI-nél végződik, félkör (egy ív lefelés) 1*PI és így tovább teljes körig, ami 2*PI</p>
+
+<canvas id="kor" width="200" height="100"></canvas>
+
+<script>
+var c2 = document.getElementById("kor");
+var ctx2 = c2.getContext("2d");
+ctx2.beginPath();  // aztmondjuk a kor id-jű vászonnak, hogy rajzolni szeretnénk egy útvonalat
+ctx2.arc(95, 50, 40, 0, 2 * Math.PI); // megadjuk, hogy körvonalat akarunk rajzolni. Az értékek sorba: közép pont X, középpont Y, sugár, kiindulási szög, végszög. 
+									  // A 2*Math.Pi ugye kiadja így a teljes kört radiáns értékben. A körvonal 0 pontja az óra 3 óra poziciójában van.
+									  
+ctx2.stroke(); // végrehajtjuk az "ecsetvonást" a fenti beállítások szerint
+</script> 
+
+<!-- Ez itt a kör magyarázó ábra kirajozlás -->
+							<canvas id="kormagyarazo" width="100" height="100"></canvas>
+							<script>
+							var cm = document.getElementById("kormagyarazo");
+							var ctxm = cm.getContext("2d");
+							ctxm.beginPath(); 
+							ctxm.arc(50, 50, 40, 0, 2 * Math.PI); 								  
+
+							ctxm.font = "10px Arial";
+
+							ctxm.fillStyle = "red";
+							ctxm.fillRect(45,5,10,10);
+
+
+							ctxm.fillStyle = "red";
+							ctxm.fillRect(85,45,10,10);
+
+
+							ctxm.fillStyle = "red";
+							ctxm.fillRect(45,85,10,10);
+
+
+							ctxm.fillStyle = "red";
+							ctxm.fillRect(5,45,10,10);
+
+							ctxm.fillStyle = "black";
+							ctxm.fillText("1.5*PI", 35, 23);
+							ctxm.fillText("1*PI", 15, 54);
+							ctxm.fillText("0.5*PI", 35, 80);
+							ctxm.fillText("0", 70, 54);
+
+							ctxm.stroke();
+							</script> 
+<!-- Ez itt a kör magyarázó ábra kirajozlás VÉGE -->
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+	SZÍNÁTMENET (GRADIÁNS) RAJZOLÁS
+
+
+ -->
+<div>
+<h2>Szín gradiáns</h2>
+<p>Vagyis színátmenet. Meg kell adni, hogy merről merre és milyen színekből álljon. Akármennyi átmenet lehet, ez most kettőből áll. A kódban van példa háromra is.</p>
+<canvas id="gradians" width="200" height="100"></canvas>
+
+<script>
+var c3 = document.getElementById("gradians");
+var ctx3 = c3.getContext("2d");
+
+// Színátmenet készítése
+var grd3 = ctx3.createLinearGradient(0, 0, 200, 0); // azt mondjuk a vászonnak, hogy egyenletes színátmenetet (linear gradient) akarunk csinálni. 
+													// Az értékek x0, y0, x1, y1 amik megmondják honnan hova megy az átmenet. Ebben a beállításban
+													// balról jobra megy. De próbáld meg átírni az értékéeket más pozitív számokra és látni fogod
+													// miként változik. Például 0,0,200,100-nál jobra fog dőlni, mert a jobb alsó sarok felé mutat
+
+grd3.addColorStop(0, "red");	    // megadjuk a színátmenet kezdő színét. A szám 0 és 1 közötti érték, ami kifejezi, hogy az átmenet mekkora arányát képzi.
+grd3.addColorStop(1, "blue");	    // megadjuk a színátmenet cél színét. Az 1 miatt ez lesz mindig a végén.
+								    // akármennyi színt hozzá lehet adni ugyan ilyen sorokkal
+									
+// grd3.addColorStop(0.2,"green");  // ha ezt kikommenteled látni fogod, milyen ha több szín kerül bele. A számot átírhatod bármire 0 és 1 között, 
+								    //például 0.5-el pont középen lesz
+								
+// Átment képre rakása
+ctx3.fillStyle = grd3; 			// ezzel mondjuk meg, hogy töltse ki a fent létrehozott színátmenettel a váaszont
+ctx3.fillRect(0, 0, 200, 100); 	// ezzel mondjuk ki milyen területet töltsön ki. 
+								// Ez esetben az egész vásznat kitöltjük 0,0 (bal felső sarok) és 200,100 (jobb alsó sarok) között
+								// a fillRect olyan, mint a stroke(). Végre hajtja a "festést" a "vászonra" csak ez kitölt nem vonalat húz.
+							
+</script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+	KÖR SZÍNÁTMENET (GRADIÁNS) RAJZOLÁS
+
+
+ -->
+<div>
+<h2>Kör gradiáns</h2>
+<p>Ez is színátmenet csak egy körből megy kifelé. Külön megadható a középpontja minden színkörnek, most mind a háromnak ugyan ott van.</p>
+<canvas id="korgradians" width="200" height="100"></canvas>
+
+<script>
+var c4 = document.getElementById("korgradians");
+var ctx4 = c4.getContext("2d");
+
+// Create gradient
+var grd4 = ctx4.createRadialGradient(100, 50, 3, 90, 60, 100); // azt mondjuk a vászonnak, hogy egy kör gradiánst akarunk
+															   // az értékek: kör középpontja X,Y, az első szín sugara, második szín közép pontja X és Y és végül a második kör sugara.
+grd4.addColorStop(0, "red");
+grd4.addColorStop(0.2, "brown");
+grd4.addColorStop(1, "blue");
+
+// Fill with gradient
+ctx4.fillStyle = grd4;
+ctx4.fillRect(0, 0, 200, 100);
+</script> 
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+	EGY KOMBINÁLT PÉLDA
+
+
+ -->
+<div>
+<h2>Három kombinálva</h2>
+<p>Egy példa arra, hogy minden egyes Canvas művelet kombinálható akármilyen mennyiségben</p>
+<canvas id="kombinalt" width="200" height="100"></canvas>
+
+<script>
+var c5 = document.getElementById("kombinalt");
+var ctx5 = c5.getContext("2d");
+
+// először csinálunk egy gradiánst
+var grd5 = ctx5.createLinearGradient(100, 0, 200, 100); // ferdére akarom
+grd5.addColorStop(0, "red");    // ezeket a színeket ezekben az arányokban akarom
+grd5.addColorStop(0.1, "green");
+grd5.addColorStop(0.5, "#666");
+grd5.addColorStop(1, "blue");
+
+ctx5.fillStyle = grd5;
+ctx5.fillRect(10, 10, 150, 80); // ezúttal nem akarom kitölteni az egészet
+
+// aztán csinálok egy nagyobb kört
+ctx5.arc(95, 50, 49, 0, 360);
+
+// a kör után szeretnék egy vonalat is, de most a másik irányba
+ctx5.moveTo(0, 100);
+ctx5.lineTo(200, 0);
+
+// megrajzolom a kört és a vonalat egyszerre. Vonal rajzolsánál akárháyn lépést meg lehet adni rajzolás előtt.
+ctx5.stroke();
+</script>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+	KÉP PÉLDA
+
+
+ -->
+<div>
+<h2>Kép Canvasként</h2>
+<p>Megeshet, hogy dinamikusan szeretnél képet rakni a weboldalra például, szeretnéd ráírni a felhasználó profil képére a nevét. A lenti képet, ha megpróbálod lementeni látni fogod, hogy a JavaScript generálta, feliratos kép nincs sehol a szerveren.</p>
+
+<canvas id="kep" width="250" height="250"></canvas>
+
+<script>
+var img = new Image;
+
+var c6   = document.getElementById("kep");
+var ctx6 = c6.getContext("2d");
+
+ctx6.font = "25px Arial";
+
+img.addEventListener('load', function() {
+   ctx6.drawImage(img, 0,0);
+   ctx6.fillText("User 12", 100, 130);
+}, false);
+
+img.src = 'img/example-image1.png';
+
+</script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+	DINAMIKUS KÉP PÉLDA
+
+
+ -->
+<div>
+<h2>Kép Canvasként Dinamikusan</h2>
+<p>Itt beállíthatsz egy betű színt, háttér színt és egy szöveget és kiválaszthatod melyik macskát szeretnéd látni.</p>
+<label for="szoveg">Szöveg:</label><input type="text" id="szoveg" placeholder="valami"><br><br>
+<label for="betuszin">Betű szín:</label><input type="color" value="#f97575" id="betuszin" autocomplete="off"><br><br>
+<label for="hatterszin">Háttér szín:</label><input type="color" value="#75a3f9" id="hatterszin" autocomplete="off"><br><br>
+Melyik macska? <input type="radio" name="cat" value="1"  autocomplete="off"><input type="radio" name="cat" value="2" checked  autocomplete="off"><br><br>
+<button id="rajzolas">Kép készítése</button>
+<br><br>
+<canvas id="kep2" width="250" height="250"></canvas>
+
+<script>
+// ez egy sokkal bonyolultabb kód de elmagyarázom
+
+// funkció a rajzolásra, mivel ebben a kód részletben kétszer is rajzolunk:
+// egyszer kirajzoljuk az alap beállítást (második cica, kék háttérrel és rózsaszín betűkkel)
+// utána rajzolunk újra, amikor megnyomjuk a gombot. Így van értelme funkcióba rakni, hogy ne
+// ismétlődjön a kód.
+
+
+function rajzoljKepet(cica,szoveg,hatter,szovegszin,id)
+{
+	var img = new Image;
+	var c   = document.getElementById(id);
+	var ctx = c.getContext("2d");
+
+	ctx.font = "20px Times";
+	
+	ctx.fillStyle = hatter;
+	ctx.fillRect(0,0,250,250);
+
+	img.addEventListener('load', function() {
+	   ctx.drawImage(img, 0,0);
+	   ctx.fillStyle = szovegszin;
+	   ctx.fillText(szoveg, 100, 130);
+	}, false);
+
+	img.src = 'img/example-image' + cica + '.png';
+}
+
+
+// ez a szokásios HTML tag gyűjtögetés változókba ID alapján. 
+var szoveg     = document.getElementById("szoveg");
+var betuszin   = document.getElementById("betuszin");
+var hatterszin = document.getElementById("hatterszin");
+var gomb 	   = document.getElementById("rajzolas");
+
+
+var cicak	   = document.querySelectorAll('input[name="cat"]'); // a rádió gombokat a nevük alapján gyűjtjük be így
+
+rajzoljKepet(2,"Szöveg","#75a3f9","#f97575","kep2"); // itt kirajzoljuk az alap beállítást
+
+
+gomb.addEventListener("click",function(){
+// ha valaki megnyomja a "Kép készítése" gombot ez a kód fut le
+	
+	var valasztottCica; // ebben lesz a kiválaszott cica értéke (1 vagy 2)
+	
+	for (const cica of cicak) 
+	{ // ez a ciklus végigrohan az összes rádiógombon
+		if (cica.checked) 
+		{// ha talál egy rádiógombot aminek a "checked" értéke be van kapcsolva (ergo ki van választva), akkor elmenti az értékét és kilép
+			valasztottCica = cica.value; // előbb létrehozott valsztottCica változó itt kap értéket
+			break;
+		}
+	}
+	
+	// a gombonyomás végén, miután megvan a választott cica értéke is, itt rajzoljuk ki a funkciónnakkal a képet.
+	rajzoljKepet(valasztottCica,szoveg.value,hatterszin.value,betuszin.value,"kep2");
+
+});
+
+
+</script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+	VICCES KÖRDIAGRAM :)
+
+
+ -->
+<div>
+<h2>Egy kör diagram</h2>
+<p>Kék: ég aránya a képen<br>Sötét sárga: piramis árnyékos része<br>Sárga: piramis</p>
+<canvas id="kordiagram" width="250" height="250"></canvas>
+
+<script>
+var c7 = document.getElementById("kordiagram");
+var ctx7 = c7.getContext("2d");
+
+// először megrajzoljuk az "ég kört"
+ctx7.beginPath(); 
+ctx7.arc(125, 125, 122, 0, 2* Math.PI);
+ctx7.fillStyle = "#75a8c7";
+ctx7.fill();
+ctx7.closePath();
+
+// majd megrajzoljuk a piramist
+ctx7.beginPath(); 
+ctx7.moveTo(125,125);
+ctx7.arc(125, 125, 122, 0.25*Math.PI,0.75*Math.PI);
+ctx7.fillStyle = "#dbae53";
+ctx7.moveTo(125,125);
+ctx7.fill();
+ctx7.closePath();
+
+// végül rárajzoljuk az árnyékát
+ctx7.beginPath();
+ctx7.moveTo(125,125);
+ctx7.arc(125, 125, 122, 0.60*Math.PI,0.75*Math.PI);
+ctx7.fillStyle = "#806530";
+ctx7.fill();
+
+</script>
+</div>
+
+<div>
+<span>Képek forrása: <a href="https://pixabay.com/illustrations/cat-cartoon-kitten-kitty-animal-5746875/">Cica 1</a>, <a href="https://pixabay.com/illustrations/cat-kitten-kawaii-chibi-kitty-5755899/">Cica 2</a></span>
+</div>
+</body>
+</html>
